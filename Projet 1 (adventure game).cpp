@@ -10,13 +10,13 @@ enum tile_type {
 void afficher(int map[10][20]) {
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
-			if (map[i][j] == 0) {
+			if (map[i][j] == ground) {
 				std::cout << ".";
 			}
-			if (map[i][j] == 1) {
+			if (map[i][j] == water) {
 				std::cout << "~";
 			}
-			if (map[i][j] == 2) {
+			if (map[i][j] == mountain) {
 				std::cout << "A";
 			}
 		}
@@ -28,6 +28,18 @@ int main() {
 	int map[10][20] = {};
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
-			map[i][j] == 0;
+			map[i][j] = 0;
+		}
 	}
+	for (int i = 4; i < 10; ++i) {
+		for (int j = 12; j < 20; ++j) {
+			map[i][j] = 1;
+		}
+	}
+	for (int i = 8; i < 10; ++i) {
+		for (int j = 6; j < 20; ++j) {
+			map[i][j] = 2;
+		}
+	}
+	afficher(map);
 }
