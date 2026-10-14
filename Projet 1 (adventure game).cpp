@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string>
+#include <windows.h>
+#include <random>
 
 struct Personnage {
 	std::string nom;
@@ -15,11 +17,6 @@ enum tile_type {
 void afficher(int map[10][20], Personnage* perso) {
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
-
-
-			//for pour parcourir pers
-			//mettre un bool a true si perso sur la case
-			// premier if de a haine suivante test le bool et continue si vrai
 			if (map[i][j] == ground) {
 				int preuve = 0;
 				for (int a = 1; a < 6; ++a) {
@@ -27,7 +24,6 @@ void afficher(int map[10][20], Personnage* perso) {
 						std::cout << "X";
 						preuve = +1;
 					}
-
 				}
 				if (i == perso[0].yhero && j == perso[0].xhero && preuve == 0) {
 					std::cout << perso[0].nom;
@@ -60,6 +56,7 @@ void afficher(int map[10][20], Personnage* perso) {
 	}
 };
 
+
 int main() {
 	int map[10][20] = {};
 	for (int i = 0; i < 10; ++i) {
@@ -77,8 +74,7 @@ int main() {
 			map[i][j] = 2;
 		}
 	}
-	Personnage perso[6] = {{"H",5,0,1},{"X",0,0},{"X",0,1},{"X",0,2},{"X",0,3},{"X",0,4}};
-	
+	Personnage perso[6] = {{"H",5,0,1},{"X",0,0},{"X",1,1},{"X",2,2},{"X",3,3},{"X",4,4}};
 	afficher(map, perso);
 	char touche = 'm';
 	std::cin >> touche;
@@ -118,6 +114,57 @@ int main() {
 		}
 		if (perso[0].yhero == 10) {
 			perso[0].yhero -= 1;
+		}
+		for (int a = 1; a < 6; ++a) {
+			if (perso[0].yhero == perso[a].yhero && perso[0].xhero == perso[a].xhero) {
+				perso[0].vie -= 1;
+			}
+			if (perso[0].vie == 0) {
+				std::cout << "GAME OVER";
+				return 0;
+			}
+		}
+		for (int a = 1; a < 6; ++a) {
+			std::random_device rd;
+			std::mt19937 gen(rd());
+			std::uniform_int_distribution<int> distrib(1, 4);
+			int movement = distrib(gen);
+			if (movement == 1) {
+				if (map[perso[a].yhero + 1][perso[a].xhero] == 2) {
+					perso[a].yhero += 0;
+				}
+				else { perso[a].yhero += 1; }
+			}
+			if (movement == 2) {
+				if (map[perso[a].yhero - 1][perso[a].xhero] == 2) {
+					perso[a].yhero -= 0;
+				}
+				else { perso[a].yhero -= 1; }
+			}
+			if (movement == 3) {
+				if (map[perso[a].yhero][perso[a].xhero+1] == 2) {
+					perso[a].xhero += 0;
+				}
+				else { perso[a].xhero += 1; }
+			}
+			if (movement == 4) {
+				if (map[perso[a].yhero][perso[a].xhero-1] == 2) {
+					perso[a].xhero -= 0;
+				}
+				else { perso[a].xhero -= 1; }
+			}
+			if (perso[a].xhero < 0) {
+				perso[a].xhero += 1;
+			}
+			if (perso[a].xhero == 20) {
+				perso[a].xhero -= 1;
+			}
+			if (perso[a].yhero < 0) {
+				perso[a].yhero += 1;
+			}
+			if (perso[a].yhero == 10) {
+				perso[a].yhero -= 1;
+			}
 		}
 		for (int a = 1; a < 6; ++a) {
 			if (perso[0].yhero == perso[a].yhero && perso[0].xhero == perso[a].xhero) {
