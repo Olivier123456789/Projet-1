@@ -13,7 +13,28 @@ enum tile_type {
 	ground = 0,
 	water = 1,
 	mountain = 2,
+	sortie = 3,
 };
+
+void creation(int map[10][20], int ysortie, int xsortie) {
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 20; ++j) {
+			map[i][j] = 0;
+		}
+	}
+	for (int i = 4; i < 6; ++i) {
+		for (int j = 12; j < 20; ++j) {
+			map[i][j] = 1;
+		}
+	}
+	for (int i = 7; i < 8; ++i) {
+		for (int j = 6; j < 20; ++j) {
+			map[i][j] = 2;
+		}
+	}
+	map[ysortie][xsortie] = 3;
+}
+
 void afficher(int map[10][20], Personnage* perso) {
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
@@ -51,30 +72,20 @@ void afficher(int map[10][20], Personnage* perso) {
 			else if (map[i][j] == mountain) {
 				std::cout << "A";
 			}
+			else if (map[i][j] == sortie) {
+				std::cout << "E";
+			}
 		}
 		std::cout << '\n';
 	}
 };
 
-
 int main() {
 	int map[10][20] = {};
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
-			map[i][j] = 0;
-		}
-	}
-	for (int i = 4; i < 6; ++i) {
-		for (int j = 12; j < 20; ++j) {
-			map[i][j] = 1;
-		}
-	}
-	for (int i = 7; i < 8; ++i) {
-		for (int j = 6; j < 20; ++j) {
-			map[i][j] = 2;
-		}
-	}
-	Personnage perso[6] = {{"H",5,0,1},{"X",0,0},{"X",1,1},{"X",2,2},{"X",3,3},{"X",4,4}};
+	int ysortie = 9;
+	int xsortie = 19;
+	creation(map, ysortie, xsortie);
+	Personnage perso[6] = { {"H",5,0,1},{"X",0,0},{"X",1,1},{"X",2,2},{"X",3,3},{"X",4,4} };
 	afficher(map, perso);
 	char touche = 'm';
 	std::cin >> touche;
@@ -174,6 +185,10 @@ int main() {
 				std::cout << "GAME OVER";
 				return 0;
 			}
+		}
+		if (perso[0].yhero == ysortie && perso[0].xhero == xsortie) {
+			std::cout << "Niveau termine !!!";
+			return 0;
 		}
 		afficher(map, perso);
 		std::cin >> touche;
