@@ -38,45 +38,26 @@ void creation(int map[10][20], int ysortie, int xsortie) {
 void afficher(int map[10][20], Personnage* perso) {
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
+			for (int a = 0; a < 6; ++a) {
+				if (perso[a].xhero == j && perso[a].yhero == i) {
+					std::cout << perso[a].nom;
+				}
+			}
 			if (map[i][j] == ground) {
-				int preuve = 0;
-				for (int a = 1; a < 6; ++a) {
-					if (perso[a].xhero == j && perso[a].yhero == i) {
-						std::cout << "X";
-						preuve = +1;
-					}
-				}
-				if (i == perso[0].yhero && j == perso[0].xhero && preuve == 0) {
-					std::cout << perso[0].nom;
-				}
-				else if (preuve==0){
-					std::cout << ".";
-				}
+				std::cout << ".";
 			}
-				else if (map[i][j] == water) {
-				int preuve = 0;
-				for (int a = 1; a < 6; ++a) {
-					if (perso[a].xhero == j && perso[a].yhero == i) {
-						std::cout << "X";
-						preuve = +1;
-					}
-				}
-				if (i == perso[0].yhero && j == perso[0].xhero && preuve == 0) {
-						std::cout << perso[0].nom;
-					}
-					else if (preuve ==0) {
-						std::cout << "~";
-					}
-					
+			if (map[i][j] == water) {
+				std::cout << "~";
 			}
-			else if (map[i][j] == mountain) {
+			if (map[i][j] == mountain) {
 				std::cout << "A";
 			}
-			else if (map[i][j] == sortie) {
+			if (map[i][j] == sortie) {
 				std::cout << "E";
 			}
+
 		}
-		std::cout << '\n';
+		std::cout << "\n";
 	}
 };
 
