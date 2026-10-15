@@ -36,24 +36,42 @@ void creation(int map[10][20], int ysortie, int xsortie) {
 }
 
 void afficher(int map[10][20], Personnage* perso) {
+	int coordonnees[10][20] = {};
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
 			for (int a = 0; a < 6; ++a) {
 				if (perso[a].xhero == j && perso[a].yhero == i) {
-					std::cout << perso[a].nom;
+					coordonnees[i][j] = 1;
+				}
+				else {
+					coordonnees[i][j] = 0;
 				}
 			}
-			if (map[i][j] == ground) {
-				std::cout << ".";
+		}
+	}
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 20; ++j) {
+			for (int a = 0; a < 6; ++a) {
+				if (perso[a].xhero == j && perso[a].yhero == i) {
+					if (coordonnees[i][j] == 1) {
+						std::cout << perso[a].nom;
+					}
+				}
 			}
-			if (map[i][j] == water) {
-				std::cout << "~";
-			}
-			if (map[i][j] == mountain) {
-				std::cout << "A";
-			}
-			if (map[i][j] == sortie) {
-				std::cout << "E";
+			if (coordonnees[i][j] == 0) {
+
+				if (map[i][j] == ground) {
+					std::cout << ".";
+				}
+				if (map[i][j] == water) {
+					std::cout << "~";
+				}
+				if (map[i][j] == mountain) {
+					std::cout << "A";
+				}
+				if (map[i][j] == sortie) {
+					std::cout << "E";
+				}
 			}
 
 		}
