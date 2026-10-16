@@ -9,14 +9,12 @@ struct Personnage {
 	int xhero = 0;
 	int vie = 1;
 };
-
 enum tile_type {
 	ground = 0,
 	water = 1,
 	mountain = 2,
 	sortie = 3,
 };
-
 void creation(int map[10][20], int ysortie, int xsortie, int niveau) {
 	if (niveau == 1) {
 		for (int i = 0; i < 10; ++i) {
@@ -94,36 +92,28 @@ void positions(int map[10][20], Personnage* perso) {
 void afficher(int map[10][20], Personnage* perso) {
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
+			int preuve = 0;
 			if (map[i][j] == ground) {
-				int preuve = 0;
-				for (int a = 1; a < 6; ++a) {
-					if (perso[a].xhero == j && perso[a].yhero == i) {
-						std::cout << "X";
-						preuve = +1;
+				for (int a = 0; a < 6; ++a) {
+					if (i == perso[a].yhero && j == perso[a].xhero) {
+						std::cout << perso[a].nom;
+						preuve += 1;
 					}
 				}
-				if (i == perso[0].yhero && j == perso[0].xhero && preuve == 0) {
-					std::cout << perso[0].nom;
-				}
-				else if (preuve==0){
+				if (preuve == 0) {
 					std::cout << ".";
 				}
 			}
-				else if (map[i][j] == water) {
-				int preuve = 0;
-				for (int a = 1; a < 6; ++a) {
-					if (perso[a].xhero == j && perso[a].yhero == i) {
-						std::cout << "X";
-						preuve = +1;
+			else if (map[i][j] == water) {
+				for (int a = 0; a < 6; ++a) {
+					if (i == perso[a].yhero && j == perso[a].xhero) {
+						std::cout << perso[a].nom;
+						preuve += 1;
 					}
 				}
-				if (i == perso[0].yhero && j == perso[0].xhero && preuve == 0) {
-						std::cout << perso[0].nom;
-					}
-					else if (preuve ==0) {
-						std::cout << "~";
-					}
-					
+				if (preuve == 0) {
+					std::cout << "~";
+				}
 			}
 			else if (map[i][j] == mountain) {
 				std::cout << "A";
@@ -135,7 +125,6 @@ void afficher(int map[10][20], Personnage* perso) {
 		std::cout << '\n';
 	}
 };
-
 void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int defaite, int niveau) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
@@ -271,5 +260,6 @@ int main() {
 			positions(map, perso);
 			afficher(map, perso);
 			mouvement(map, perso, ysortie, xsortie, defaite,niveau);
+			std::cout << "Salut";
 		}
 }
