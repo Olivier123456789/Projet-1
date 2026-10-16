@@ -136,8 +136,7 @@ void afficher(int map[10][20], Personnage* perso) {
 	}
 };
 
-void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int defaite) {
-	int niveau = 1;
+void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int defaite, int niveau) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 			char touche = 'm';
@@ -166,6 +165,10 @@ void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int
 					if (map[perso[0].yhero][perso[0].xhero] == 2) {
 						perso[0].xhero -= 1;
 					}
+				}
+				if (touche == 'x' || touche == 'X') {
+					defaite += 1;
+					break;
 				}
 				if (perso[0].xhero < 0) {
 					perso[0].xhero += 1;
@@ -244,8 +247,8 @@ void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int
 					return;
 					
 				}
-					afficher(map, perso);
-					std::cin >> touche;
+				afficher(map, perso);
+				std::cin >> touche;
 			}
 		
 	
@@ -258,24 +261,15 @@ int main() {
 	std::uniform_int_distribution<int> posx(0, 19);
 	std::uniform_int_distribution<int> posy(0, 9);
 	int map[10][20] = {};
-	int ysortie = 0;
-	int xsortie = 0;
+	int ysortie = 9;
+	int xsortie = 19;
 	int defaite = 0;
-	std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
 	Personnage perso[6] = { {"H",0,0,1},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0} };
-	for (int niveau = 1; niveau < 4; ++niveau) {
-		creation(map, ysortie, xsortie, niveau);
-		positions(map, perso);
-		afficher(map, perso);
-		mouvement(map, perso, ysortie, xsortie, defaite);
-		if (defaite == 1) {
-			return 0;
+		for (int niveau = 1; niveau < 3; ++niveau) {
+			std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
+			creation(map, ysortie, xsortie, niveau);
+			positions(map, perso);
+			afficher(map, perso);
+			mouvement(map, perso, ysortie, xsortie, defaite,niveau);
 		}
-		else if (defaite == 0) {
-			std::cout << "Coordonnees de la sortie : ";
-			std::cin >> ysortie;
-			std::cin >> xsortie;
-		}
-	}
-	
 }
