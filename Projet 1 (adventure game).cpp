@@ -39,6 +39,7 @@ void afficher(int map[10][20], Personnage* perso) {
 	int coordonnees[10][20] = {};
 	for (int i = 0; i < 10; ++i) {
 		for (int j = 0; j < 20; ++j) {
+<<<<<<< Updated upstream
 			for (int a = 0; a < 6; ++a) {
 				if (perso[a].xhero == j && perso[a].yhero == i) {
 					coordonnees[i][j] = 1;
@@ -47,6 +48,26 @@ void afficher(int map[10][20], Personnage* perso) {
 					coordonnees[i][j] = 0;
 				}
 			}
+=======
+			if (map[i][j] == ground) {
+				std::cout << ".";
+			}
+			else if (map[i][j] == water) {
+				std::cout << "~";
+			}
+			else if (map[i][j] == mountain) {
+				std::cout << "A";
+			}
+			else if (map[i][j] == sortie) {
+				std::cout << "E";
+			}
+			for (int a = 0; a < 6; ++a) {
+				if (perso[a].xhero == j && perso[a].yhero == i) {
+					std::cout << perso[a].nom;
+					continue;
+				}
+			}
+>>>>>>> Stashed changes
 		}
 	}
 	for (int i = 0; i < 10; ++i) {
@@ -83,6 +104,7 @@ int main() {
 	int map[10][20] = {};
 	int ysortie = 9;
 	int xsortie = 19;
+<<<<<<< Updated upstream
 	creation(map, ysortie, xsortie);
 	Personnage perso[6] = { {"H",5,0,1},{"X",0,0},{"X",1,1},{"X",2,2},{"X",3,3},{"X",4,4} };
 	afficher(map, perso);
@@ -94,6 +116,16 @@ int main() {
 			if (map[perso[0].yhero][perso[0].xhero] == 2) {
 				perso[0].yhero += 1;
 			}
+=======
+	int defaite = 0;
+	Personnage perso[6] = { {"H",0,0,1},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0} };
+		for (int niveau = 1; niveau < 3; ++niveau) {
+			std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
+			creation(map, ysortie, xsortie, niveau);
+			positions(map, perso);
+			afficher(map, perso);
+			mouvement(map, perso, ysortie, xsortie, defaite,niveau);
+>>>>>>> Stashed changes
 		}
 		if (touche == 'q' || touche == 'Q') {
 			perso[0].xhero -= 1;
