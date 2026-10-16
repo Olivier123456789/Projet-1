@@ -17,20 +17,56 @@ enum tile_type {
 	sortie = 3,
 };
 
-void creation(int map[10][20], int ysortie, int xsortie) {
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
-			map[i][j] = 0;
+void creation(int map[10][20], int ysortie, int xsortie, int niveau) {
+	if (niveau == 1) {
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 20; ++j) {
+				map[i][j] = 0;
+			}
+		}
+		for (int i = 4; i < 6; ++i) {
+			for (int j = 12; j < 20; ++j) {
+				map[i][j] = 1;
+			}
+		}
+		for (int i = 7; i < 8; ++i) {
+			for (int j = 6; j < 20; ++j) {
+				map[i][j] = 2;
+			}
 		}
 	}
-	for (int i = 4; i < 6; ++i) {
-		for (int j = 12; j < 20; ++j) {
-			map[i][j] = 1;
+	if (niveau == 2) {
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 20; ++j) {
+				map[i][j] = 0;
+			}
+		}
+		for (int i = 3; i < 6; ++i) {
+			for (int j = 7; j < 20; ++j) {
+				map[i][j] = 1;
+			}
+		}
+		for (int i = 6; i < 8; ++i) {
+			for (int j = 6; j < 20; ++j) {
+				map[i][j] = 2;
+			}
 		}
 	}
-	for (int i = 7; i < 8; ++i) {
-		for (int j = 6; j < 20; ++j) {
-			map[i][j] = 2;
+	if (niveau == 3) {
+		for (int i = 0; i < 10; ++i) {
+			for (int j = 0; j < 20; ++j) {
+				map[i][j] = 0;
+			}
+		}
+		for (int i = 2; i < 6; ++i) {
+			for (int j = 12; j < 20; ++j) {
+				map[i][j] = 1;
+			}
+		}
+		for (int i = 6; i < 9; ++i) {
+			for (int j = 6; j < 20; ++j) {
+				map[i][j] = 2;
+			}
 		}
 	}
 	map[ysortie][xsortie] = 3;
@@ -45,8 +81,8 @@ void positions(int map[10][20], Personnage* perso) {
 		perso[i].xhero = posenx;
 		int poseny = posy(gen);
 		perso[i].yhero = poseny;
-		if (map[perso[i].yhero][perso[i].xhero] == 2) {
-			while (map[perso[i].yhero][perso[i].xhero] == 2) {
+		if (map[perso[i].yhero][perso[i].xhero] == 2 || map[perso[i].yhero][perso[i].xhero] == 3) {
+			while (map[perso[i].yhero][perso[i].xhero] == 2|| map[perso[i].yhero][perso[i].xhero] == 3) {
 				int posenx = posx(gen);
 				perso[i].xhero = posenx;
 				int poseny = posy(gen);
@@ -100,11 +136,10 @@ void afficher(int map[10][20], Personnage* perso) {
 	}
 };
 
-void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie) {
+void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie, int defaite) {
 	int niveau = 1;
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	int defaite = 0;
 			char touche = 'm';
 			std::cin >> touche;
 			while (touche != 'x') {
@@ -150,6 +185,7 @@ void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie) {
 					}
 					if (perso[0].vie == 0) {
 						std::cout << "GAME OVER !";
+						defaite += 1;
 						return;
 					}
 				}
@@ -157,25 +193,25 @@ void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie) {
 					std::uniform_int_distribution<int> distrib(1, 4);
 					int movement = distrib(gen);
 					if (movement == 1) {
-						if (map[perso[a].yhero + 1][perso[a].xhero] == 2) {
+						if (map[perso[a].yhero + 1][perso[a].xhero] == 2 || map[perso[a].yhero + 1][perso[a].xhero]==3) {
 							perso[a].yhero += 0;
 						}
 						else { perso[a].yhero += 1; }
 					}
 					if (movement == 2) {
-						if (map[perso[a].yhero - 1][perso[a].xhero] == 2) {
+						if (map[perso[a].yhero - 1][perso[a].xhero] == 2 || map[perso[a].yhero - 1][perso[a].xhero] == 3) {
 							perso[a].yhero -= 0;
 						}
 						else { perso[a].yhero -= 1; }
 					}
 					if (movement == 3) {
-						if (map[perso[a].yhero][perso[a].xhero + 1] == 2) {
+						if (map[perso[a].yhero][perso[a].xhero + 1] == 2 || map[perso[a].yhero][perso[a].xhero + 1] == 3) {
 							perso[a].xhero += 0;
 						}
 						else { perso[a].xhero += 1; }
 					}
 					if (movement == 4) {
-						if (map[perso[a].yhero][perso[a].xhero - 1] == 2) {
+						if (map[perso[a].yhero][perso[a].xhero - 1] == 2 || map[perso[a].yhero][perso[a].xhero - 1] == 3) {
 							perso[a].xhero -= 0;
 						}
 						else { perso[a].xhero -= 1; }
@@ -199,19 +235,17 @@ void mouvement(int map[10][20], Personnage* perso, int ysortie, int xsortie) {
 					}
 					if (perso[0].vie == 0) {
 						std::cout << "GAME OVER !";
+						defaite += 1;
 						return;
 					}
 				}
 				if (perso[0].yhero == ysortie && perso[0].xhero == xsortie) {
 					std::cout << "Niveau " << niveau << " termine !!!" << "\n" << "\n";
-					niveau += 1;
-					positions(map, perso);
-					std::cout << "Coordonnees de la sortie : ";
-					std::cin >> ysortie;
-					std::cin >> xsortie;
+					return;
+					
 				}
-				afficher(map, perso);
-				std::cin >> touche;
+					afficher(map, perso);
+					std::cin >> touche;
 			}
 		
 	
@@ -224,12 +258,24 @@ int main() {
 	std::uniform_int_distribution<int> posx(0, 19);
 	std::uniform_int_distribution<int> posy(0, 9);
 	int map[10][20] = {};
-	int ysortie = 9;
-	int xsortie = 19;
-	creation(map, ysortie, xsortie);
-	Personnage perso[6] = { {"H",0,0,1},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0} };
-	positions(map, perso);
+	int ysortie = 0;
+	int xsortie = 0;
+	int defaite = 0;
 	std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
-	afficher(map, perso);
-	mouvement(map, perso, ysortie, xsortie);
+	Personnage perso[6] = { {"H",0,0,1},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0} };
+	for (int niveau = 1; niveau < 4; ++niveau) {
+		creation(map, ysortie, xsortie, niveau);
+		positions(map, perso);
+		afficher(map, perso);
+		mouvement(map, perso, ysortie, xsortie, defaite);
+		if (defaite == 1) {
+			return 0;
+		}
+		else if (defaite == 0) {
+			std::cout << "Coordonnees de la sortie : ";
+			std::cin >> ysortie;
+			std::cin >> xsortie;
+		}
+	}
+	
 }
