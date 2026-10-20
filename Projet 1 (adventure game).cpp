@@ -281,7 +281,7 @@ int mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
 
 				}
 				afficher(map, perso);
-			
+				std::cout << "\n";
 		}
 	}
 }
