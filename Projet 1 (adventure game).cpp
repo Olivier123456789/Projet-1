@@ -2,226 +2,296 @@
 #include <string>
 #include <windows.h>
 #include <random>
+#include <fstream>
+
+using namespace std;
 
 struct Personnage {
 	std::string nom;
-	int yhero = 0;
-	int xhero = 0;
+	int yp = 0;
+	int xp = 0;
 	int vie = 1;
 };
 enum tile_type {
 	ground = 0,
 	water = 1,
 	mountain = 2,
-	sortie = 3,
+	sortie = 3
 };
 
-void creation(int map[10][20], int ysortie, int xsortie) {
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
-			map[i][j] = 0;
-		}
-	}
-	for (int i = 4; i < 6; ++i) {
-		for (int j = 12; j < 20; ++j) {
-			map[i][j] = 1;
-		}
-	}
-	for (int i = 7; i < 8; ++i) {
-		for (int j = 6; j < 20; ++j) {
-			map[i][j] = 2;
-		}
-	}
-	map[ysortie][xsortie] = 3;
-}
-
-void afficher(int map[10][20], Personnage* perso) {
-	int coordonnees[10][20] = {};
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
-<<<<<<< Updated upstream
-			for (int a = 0; a < 6; ++a) {
-				if (perso[a].xhero == j && perso[a].yhero == i) {
-					coordonnees[i][j] = 1;
-				}
-				else {
-					coordonnees[i][j] = 0;
-				}
-			}
-=======
-			if (map[i][j] == ground) {
-				std::cout << ".";
-			}
-			else if (map[i][j] == water) {
-				std::cout << "~";
-			}
-			else if (map[i][j] == mountain) {
-				std::cout << "A";
-			}
-			else if (map[i][j] == sortie) {
-				std::cout << "E";
-			}
-			for (int a = 0; a < 6; ++a) {
-				if (perso[a].xhero == j && perso[a].yhero == i) {
-					std::cout << perso[a].nom;
-					continue;
-				}
-			}
->>>>>>> Stashed changes
-		}
-	}
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
-			for (int a = 0; a < 6; ++a) {
-				if (perso[a].xhero == j && perso[a].yhero == i) {
-					if (coordonnees[i][j] == 1) {
-						std::cout << perso[a].nom;
+void creation(int map[10][20], int niveau, Personnage* perso) {
+	if (niveau == 1) {
+		ifstream fichier("Maps/Niveau1.txt");
+		if (fichier)
+		{
+			string ligne;
+			for (int i = 0; i < 10; ++i) {
+				getline(fichier, ligne);
+				for (int j = 0; j < 20; ++j) {
+					if (ligne[j] == '.') {
+						map[i][j] = ground;
+					}
+					else if (ligne[j] == '~') {
+						map[i][j] = water;
+					}
+					else if (ligne[j] == 'A') {
+						map[i][j] = mountain;
+					}
+					else if (ligne[j] == 'E') {
+						map[i][j] = sortie;
+						perso[6].yp = i;
+						perso[6].xp = j;
+					}
+					else if (ligne[j] == 'H') {
+						perso[0].yp = i;
+						perso[0].xp = j;
 					}
 				}
 			}
-			if (coordonnees[i][j] == 0) {
-
-				if (map[i][j] == ground) {
-					std::cout << ".";
-				}
-				if (map[i][j] == water) {
-					std::cout << "~";
-				}
-				if (map[i][j] == mountain) {
-					std::cout << "A";
-				}
-				if (map[i][j] == sortie) {
-					std::cout << "E";
+		}
+		else
+		{
+			cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
+		}
+		return;
+	}
+	if (niveau == 2) {
+		ifstream fichier("Maps/Niveau2.txt");
+		if (fichier)
+		{
+			string ligne;
+			for (int i = 0; i < 10; ++i) {
+				getline(fichier, ligne);
+				for (int j = 0; j < 20; ++j) {
+					if (ligne[j] == '.') {
+						map[i][j] = ground;
+					}
+					else if (ligne[j] == '~') {
+						map[i][j] = water;
+					}
+					else if (ligne[j] == 'A') {
+						map[i][j] = mountain;
+					}
+					else if (ligne[j] == 'E') {
+						map[i][j] = sortie;
+						perso[6].yp = i;
+						perso[6].xp = j;
+					}
+					else if (ligne[j] == 'H') {
+						perso[0].yp = i;
+						perso[0].xp = j;
+					}
 				}
 			}
-
 		}
-		std::cout << "\n";
+		else
+		{
+			cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
+		}
+		return;
+	}
+	if (niveau == 3) {
+		ifstream fichier("Maps/Niveau3.txt");
+		if (fichier)
+		{
+			string ligne;
+			for (int i = 0; i < 10; ++i) {
+				getline(fichier, ligne);
+				for (int j = 0; j < 20; ++j) {
+					if (ligne[j] == '.') {
+						map[i][j] = ground;
+					}
+					else if (ligne[j] == '~') {
+						map[i][j] = water;
+					}
+					else if (ligne[j] == 'A') {
+						map[i][j] = mountain;
+					}
+					else if (ligne[j] == 'E') {
+						map[i][j] = sortie;
+						perso[6].yp = i;
+						perso[6].xp = j;
+					}
+					else if (ligne[j] == 'H') {
+						perso[0].yp = i;
+						perso[0].xp = j;
+					}
+				}
+			}
+		}
+		else
+		{
+			cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
+		}
+		return;
+	}
+}
+void positions(int map[10][20], Personnage* perso) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<int> posx(0, 19);
+	std::uniform_int_distribution<int> posy(0, 9);
+	for (int i = 1; i < 6; ++i) {
+		int posenx = posx(gen);
+		perso[i].xp = posenx;
+		int poseny = posy(gen);
+		perso[i].yp = poseny;
+		if (map[perso[i].yp][perso[i].xp] == 2 || map[perso[i].yp][perso[i].xp] == 3) {
+			while (map[perso[i].yp][perso[i].xp] == 2 || map[perso[i].yp][perso[i].xp] == 3) {
+				int posenx = posx(gen);
+				perso[i].xp = posenx;
+				int poseny = posy(gen);
+				perso[i].yp = poseny;
+			}
+		}
+	}
+}
+void afficher(int map[10][20], Personnage* perso) {
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 20; ++j) {
+			bool find = false;
+			for (int a = 0; a < 6; ++a) {
+				if (i == perso[a].yp && j == perso[a].xp) {
+					std::cout << perso[a].nom;
+					find = true;
+					break;
+				}
+			}
+			if (find)
+				continue;
+			else if (map[i][j] == ground) {
+				std::cout << '.';
+			}
+			else if (map[i][j] == water) {
+				std::cout << '~';
+			}
+			else if (map[i][j] == mountain) {
+				std::cout << 'A';
+			}
+			else if (map[i][j] == sortie) {
+				std::cout << 'E';
+			}
+		}
+		std::cout << '\n';
 	}
 };
 
-int main() {
-	int map[10][20] = {};
-	int ysortie = 9;
-	int xsortie = 19;
-<<<<<<< Updated upstream
-	creation(map, ysortie, xsortie);
-	Personnage perso[6] = { {"H",5,0,1},{"X",0,0},{"X",1,1},{"X",2,2},{"X",3,3},{"X",4,4} };
-	afficher(map, perso);
+void mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
+	std::random_device rd;
+	std::mt19937 gen(rd());
 	char touche = 'm';
 	std::cin >> touche;
 	while (touche != 'x') {
 		if (touche == 'z' || touche == 'Z') {
-			perso[0].yhero -= 1;
-			if (map[perso[0].yhero][perso[0].xhero] == 2) {
-				perso[0].yhero += 1;
+			perso[0].yp -= 1;
+			if (map[perso[0].yp][perso[0].xp] == 2) {
+				perso[0].yp += 1;
 			}
-=======
-	int defaite = 0;
-	Personnage perso[6] = { {"H",0,0,1},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0},{"X",0,0} };
-		for (int niveau = 1; niveau < 3; ++niveau) {
-			std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
-			creation(map, ysortie, xsortie, niveau);
-			positions(map, perso);
-			afficher(map, perso);
-			mouvement(map, perso, ysortie, xsortie, defaite,niveau);
->>>>>>> Stashed changes
 		}
 		if (touche == 'q' || touche == 'Q') {
-			perso[0].xhero -= 1;
-			if (map[perso[0].yhero][perso[0].xhero] == 2) {
-				perso[0].xhero += 1;
+			perso[0].xp -= 1;
+			if (map[perso[0].yp][perso[0].xp] == 2) {
+				perso[0].xp += 1;
 			}
 		}
 		if (touche == 's' || touche == 'S') {
-			perso[0].yhero += 1;
-			if (map[perso[0].yhero][perso[0].xhero] == 2) {
-				perso[0].yhero -= 1;
+			perso[0].yp += 1;
+			if (map[perso[0].yp][perso[0].xp] == 2) {
+				perso[0].yp -= 1;
 			}
 		}
 		if (touche == 'd' || touche == 'D') {
-			perso[0].xhero += 1;
-			if (map[perso[0].yhero][perso[0].xhero] == 2) {
-				perso[0].xhero -= 1;
+			perso[0].xp += 1;
+			if (map[perso[0].yp][perso[0].xp] == 2) {
+				perso[0].xp -= 1;
 			}
 		}
-		if (perso[0].xhero < 0) {
-			perso[0].xhero += 1;
+		if (touche == 'x' || touche == 'X') {
+			return;
 		}
-		if (perso[0].xhero == 20) {
-			perso[0].xhero -= 1;
+		if (perso[0].xp < 0) {
+			perso[0].xp += 1;
 		}
-		if (perso[0].yhero < 0) {
-			perso[0].yhero += 1;
+		if (perso[0].xp == 20) {
+			perso[0].xp -= 1;
 		}
-		if (perso[0].yhero == 10) {
-			perso[0].yhero -= 1;
+		if (perso[0].yp < 0) {
+			perso[0].yp += 1;
+		}
+		if (perso[0].yp == 10) {
+			perso[0].yp -= 1;
 		}
 		for (int a = 1; a < 6; ++a) {
-			if (perso[0].yhero == perso[a].yhero && perso[0].xhero == perso[a].xhero) {
-				perso[0].vie -= 1;
-			}
-			if (perso[0].vie == 0) {
-				std::cout << "GAME OVER";
-				return 0;
-			}
-		}
-		for (int a = 1; a < 6; ++a) {
-			std::random_device rd;
-			std::mt19937 gen(rd());
 			std::uniform_int_distribution<int> distrib(1, 4);
 			int movement = distrib(gen);
 			if (movement == 1) {
-				if (map[perso[a].yhero + 1][perso[a].xhero] == 2) {
-					perso[a].yhero += 0;
+				if (map[perso[a].yp + 1][perso[a].xp] == 2 || map[perso[a].yp + 1][perso[a].xp] == 3) {
+					perso[a].yp += 0;
 				}
-				else { perso[a].yhero += 1; }
+				else { perso[a].yp += 1; }
 			}
 			if (movement == 2) {
-				if (map[perso[a].yhero - 1][perso[a].xhero] == 2) {
-					perso[a].yhero -= 0;
+				if (map[perso[a].yp - 1][perso[a].xp] == 2 || map[perso[a].yp - 1][perso[a].xp] == 3) {
+					perso[a].yp -= 0;
 				}
-				else { perso[a].yhero -= 1; }
+				else { perso[a].yp -= 1; }
 			}
 			if (movement == 3) {
-				if (map[perso[a].yhero][perso[a].xhero+1] == 2) {
-					perso[a].xhero += 0;
+				if (map[perso[a].yp][perso[a].xp + 1] == 2 || map[perso[a].yp][perso[a].xp + 1] == 3) {
+					perso[a].xp += 0;
 				}
-				else { perso[a].xhero += 1; }
+				else { perso[a].xp += 1; }
 			}
 			if (movement == 4) {
-				if (map[perso[a].yhero][perso[a].xhero-1] == 2) {
-					perso[a].xhero -= 0;
+				if (map[perso[a].yp][perso[a].xp - 1] == 2 || map[perso[a].yp][perso[a].xp - 1] == 3) {
+					perso[a].xp -= 0;
 				}
-				else { perso[a].xhero -= 1; }
+				else { perso[a].xp -= 1; }
 			}
-			if (perso[a].xhero < 0) {
-				perso[a].xhero += 1;
+			if (perso[a].xp < 0) {
+				perso[a].xp += 1;
 			}
-			if (perso[a].xhero == 20) {
-				perso[a].xhero -= 1;
+			if (perso[a].xp == 20) {
+				perso[a].xp -= 1;
 			}
-			if (perso[a].yhero < 0) {
-				perso[a].yhero += 1;
+			if (perso[a].yp < 0) {
+				perso[a].yp += 1;
 			}
-			if (perso[a].yhero == 10) {
-				perso[a].yhero -= 1;
+			if (perso[a].yp == 10) {
+				perso[a].yp -= 1;
 			}
 		}
 		for (int a = 1; a < 6; ++a) {
-			if (perso[0].yhero == perso[a].yhero && perso[0].xhero == perso[a].xhero) {
+			if (perso[0].yp == perso[a].yp && perso[0].xp == perso[a].xp) {
 				perso[0].vie -= 1;
 			}
 			if (perso[0].vie == 0) {
-				std::cout << "GAME OVER";
-				return 0;
+				std::cout << "GAME OVER !";
+				return;
 			}
 		}
-		if (perso[0].yhero == ysortie && perso[0].xhero == xsortie) {
-			std::cout << "Niveau termine !!!";
-			return 0;
+		if (perso[0].yp == perso[6].yp && perso[0].xp == perso[6].xp) {
+			std::cout << "Niveau " << niveau << " termine !!!" << "\n" << "\n";
+			return;
+
 		}
 		afficher(map, perso);
 		std::cin >> touche;
+	}
+}
+
+int main() {
+	int niveau = 1;
+	int map[10][20] = {};
+	int defaite = 0;
+	int* d = &defaite;
+	Personnage perso[7] = { { "H",0,0,1 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{"E",0,0} };
+	for (int n = 1; n < 4; ++n) {
+		std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
+		creation(map, niveau, perso);
+		positions(map, perso);
+		afficher(map, perso);
+		mouvement(map, perso, d, niveau);
+		niveau += 1;
 	}
 }
