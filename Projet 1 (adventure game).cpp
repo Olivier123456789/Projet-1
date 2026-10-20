@@ -176,11 +176,14 @@ void afficher(int map[10][20], Personnage* perso) {
 	}
 };
 
-void mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
+int mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	char touche = 'm';
 	std::cin >> touche;
+	if (touche == 'x' || touche == 'X') {
+		return (1);
+	}
 	while (touche != 'x') {
 		if (touche == 'z' || touche == 'Z') {
 			perso[0].yp -= 1;
@@ -206,9 +209,7 @@ void mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
 				perso[0].xp -= 1;
 			}
 		}
-		if (touche == 'x' || touche == 'X') {
-			return;
-		}
+
 		if (perso[0].xp < 0) {
 			perso[0].xp += 1;
 		}
@@ -267,12 +268,12 @@ void mouvement(int map[10][20], Personnage* perso, int* d, int niveau) {
 			}
 			if (perso[0].vie == 0) {
 				std::cout << "GAME OVER !";
-				return;
+				return (1);
 			}
 		}
 		if (perso[0].yp == perso[6].yp && perso[0].xp == perso[6].xp) {
 			std::cout << "Niveau " << niveau << " termine !!!" << "\n" << "\n";
-			return;
+			return (0);
 
 		}
 		afficher(map, perso);
@@ -291,7 +292,15 @@ int main() {
 		creation(map, niveau, perso);
 		positions(map, perso);
 		afficher(map, perso);
-		mouvement(map, perso, d, niveau);
-		niveau += 1;
+		int victoire = mouvement(map, perso, d, niveau);
+		if (victoire == 1) {
+			break;
+		}
+		else {
+			niveau += 1;
+		}
+	}
+	if (niveau == 4) {
+		std::cout << "\n" << "\n" << "FELICITATION !!!! VOUS AVEZ GAGNE !!!!";
 	}
 }
