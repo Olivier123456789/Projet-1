@@ -205,7 +205,7 @@ int main() {
 	Personnage perso[7] = { { "H",0,0,1 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "E",0,0 } };
 	for (int n = 1; n < 4; ++n) {
 		std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
-		int valabilité = creation(map, niveau, perso);
+		creation(map, niveau, perso);
 		positions(map, perso);
 		afficher(map, perso);
 		int victoire = mouvement(map, perso, niveau);
@@ -220,5 +220,3 @@ int main() {
 		std::cout << "\n" << "\n" << "FELICITATION !!!! VOUS AVEZ GAGNE !!!!";
 	}
 }
-		
- 
