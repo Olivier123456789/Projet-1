@@ -37,71 +37,112 @@ int lecture(int map[10][20], int niveau, Personnage* perso) {
 	if (fichier)
 	{
 		string ligne;
-		for (int i = 0; i < 10; ++i) {
+		int en = 1;
+		int  carvalide = 0;
+		int sortievalide = 0;
+		int posdepart = 0;
+		for (int y = 0; y < 10; ++y) {
 			getline(fichier, ligne);
-			for (int j = 0; j < 20; ++j) {
-				if (ligne[j] == '.') {
-					map[i][j] = ground;
+			for (int x = 0; x < 20; ++x) {
+				if (ligne[x] == '.') {
+					map[y][x] = ground;
+					carvalide += 1;
 				}
-				else if (ligne[j] == '~') {
-					map[i][j] = water;
+				else if (ligne[x] == 'X') {
+					perso[en].yp = y;
+					perso[en].xp = x;
+					carvalide += 1;
+					en++;
 				}
-				else if (ligne[j] == 'A') {
-					map[i][j] = mountain;
+				else if (ligne[x] == '~') {
+					map[y][x] = water;
+					carvalide += 1;
 				}
-				else if (ligne[j] == 'E') {
-					map[i][j] = sortie;
-					perso[6].yp = i;
-					perso[6].xp = j;
+				else if (ligne[x] == 'A') {
+					map[y][x] = mountain;
+					carvalide += 1;
 				}
-				else if (ligne[j] == 'H') {
-					perso[0].yp = i;
-					perso[0].xp = j;
+				else if (ligne[x] == 'E') {
+					map[y][x] = sortie;
+					perso[6].yp = y;
+					perso[6].xp = x;
+					sortievalide += 1;
+					carvalide += 1;
+				}
+				else if (ligne[x] == 'H') {
+					perso[0].yp = y;
+					perso[0].xp = x;
+					posdepart += 1;
+					carvalide += 1;
 				}
 			}
+		}
+		if (posdepart == 0) {
+			cout << "ERREUR: Le fichier ne contient pas de position de depart." << endl;
+			return 1;
+		}
+		else if (sortievalide == 0) {
+			cout << "ERREUR: Le fichier ne contient pas de sortie." << endl;
+			return 1;
+		}
+		else if (carvalide < 200) {
+			cout << "ERREUR: Le fichier contient un caractere invalide" << endl;
+			return 1;
+		}
+		else if (en < 6) {
+			cout << "ERREUR: Le fichier ne contient pas assez de personnages ennemis." << endl;
+			return 1;
+		}
+		else if (en > 6) {
+			cout << "ERREUR: Le fichier contient trop de personnages ennemis." << endl;
+			return 1;
 		}
 	}
 	else
 	{
 		cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
-	}
-	return 1;
-}
-
-int creation(int map[10][20], int niveau, Personnage* perso) {
-	if (niveau == 1) {
-		lecture(map, niveau, perso);
-	}
-	if (niveau == 2) {
-		lecture(map, niveau, perso);
-	}
-	if (niveau == 3) {
-		lecture(map, niveau, perso);
+		return 1;
 	}
 	return 0;
 }
 
-void positions(int map[10][20], Personnage* perso) {
-	std::random_device rd;
-	std::mt19937 gen(rd());
-	std::uniform_int_distribution<int> posx(0, 19);
-	std::uniform_int_distribution<int> posy(0, 9);
-	for (int i = 1; i < 6; ++i) {
-		do {
-			int posenx = posx(gen);
-			perso[i].xp = posenx;
-			int poseny = posy(gen);
-			perso[i].yp = poseny;
-		} while (map[perso[i].yp][perso[i].xp] == 2 || map[perso[i].yp][perso[i].xp] == 3);
+int creation(int map[10][20], int niveau, Personnage* perso) {
+	if (niveau == 1) {
+		int lectureinvalide = lecture(map, niveau, perso);
+		if (lectureinvalide == 1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
+	if (niveau == 2) {
+		int lectureinvalide = lecture(map, niveau, perso);
+		if (lectureinvalide == 1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	if (niveau == 3) {
+		int lectureinvalide = lecture(map, niveau, perso);
+		if (lectureinvalide == 1) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	return 0;
 }
 
 void afficher(int map[10][20], Personnage* perso) {
-	for (int i = 0; i < 10; ++i) {
-		for (int j = 0; j < 20; ++j) {
+	for (int y = 0; y < 10; ++y) {
+		for (int x = 0; x < 20; ++x) {
 			bool find = false;
 			for (int a = 0; a < 6; ++a) {
-				if (i == perso[a].yp && j == perso[a].xp) {
+				if (y == perso[a].yp && x == perso[a].xp) {
 					std::cout << perso[a].nom;
 					find = true;
 					break;
@@ -109,16 +150,16 @@ void afficher(int map[10][20], Personnage* perso) {
 			}
 			if (find)
 				continue;
-			else if (map[i][j] == ground) {
+			else if (map[y][x] == ground) {
 				std::cout << '.';
 			}
-			else if (map[i][j] == water) {
+			else if (map[y][x] == water) {
 				std::cout << '~';
 			}
-			else if (map[i][j] == mountain) {
+			else if (map[y][x] == mountain) {
 				std::cout << 'A';
 			}
-			else if (map[i][j] == sortie) {
+			else if (map[y][x] == sortie) {
 				std::cout << 'E';
 			}
 		}
@@ -129,29 +170,29 @@ void afficher(int map[10][20], Personnage* perso) {
 int mouvement(int map[10][20], Personnage* perso, int niveau) {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	char touche ;
+	char touche;
 	while (1) {
 		touche = _getch();
 		if (touche == 'x' || touche == 'X') {
 			return (1);
 		}
 		if (touche == 'z' || touche == 'Z') {
-			if (map[perso[0].yp-1][perso[0].xp] != mountain && perso[0].yp-1>=0) {
+			if (map[perso[0].yp - 1][perso[0].xp] != mountain && perso[0].yp - 1 >= 0) {
 				perso[0].yp -= 1;
 			}
 		}
 		if (touche == 'q' || touche == 'Q') {
-			if (map[perso[0].yp][perso[0].xp-1] != mountain && perso[0].xp-1>=0) {
+			if (map[perso[0].yp][perso[0].xp - 1] != mountain && perso[0].xp - 1 >= 0) {
 				perso[0].xp -= 1;
 			}
 		}
 		if (touche == 's' || touche == 'S') {
-			if (map[perso[0].yp+1][perso[0].xp] != mountain && perso[0].yp+1<10) {
+			if (map[perso[0].yp + 1][perso[0].xp] != mountain && perso[0].yp + 1 < 10) {
 				perso[0].yp += 1;
 			}
 		}
 		if (touche == 'd' || touche == 'D') {
-			if (map[perso[0].yp][perso[0].xp+1] != mountain && perso[0].xp+1<20) {
+			if (map[perso[0].yp][perso[0].xp + 1] != mountain && perso[0].xp + 1 < 20) {
 				perso[0].xp += 1;
 			}
 		}
@@ -205,8 +246,10 @@ int main() {
 	Personnage perso[7] = { { "H",0,0,1 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "X",0,0 },{ "E",0,0 } };
 	for (int n = 1; n < 4; ++n) {
 		std::cout << "Niveau " << niveau << " :" << "\n" << "\n";
-		creation(map, niveau, perso);
-		positions(map, perso);
+		int niveauinvalide = creation(map, niveau, perso);
+		if (niveauinvalide == 1) {
+			break;
+		}
 		afficher(map, perso);
 		int victoire = mouvement(map, perso, niveau);
 		if (victoire == 1) {
